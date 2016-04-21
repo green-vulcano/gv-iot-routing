@@ -16,13 +16,17 @@
  * along with this software. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package it.greenvulcano.iot.routing.it.greenvulcano.routing.node;
+package it.greenvulcano.iot.routing;
+
+import java.util.HashMap;
 
 /**
- *
+ * @author Domenico Barra - eisenach@gmail.com
  */
-public interface NodeProtocol {
+public class Node {
 
-
+    private NetworkId id;
+    private Node parent;
+    private HashMap<NetworkId, Node> children;
 
 }
