@@ -20,15 +20,21 @@ package it.greenvulcano.iot.routing.v1;
 
 import it.greenvulcano.iot.routing.NetworkId;
 import it.greenvulcano.iot.routing.Packet;
+import it.greenvulcano.iot.routing.PacketCodec;
+import it.greenvulcano.iot.routing.Protocol;
+import it.greenvulcano.iot.routing.payload.BinaryChunk;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 /**
  * @author Domenico Barra - eisenach@gmail.com
  */
-public class ProtocolTest {
+public class PacketCodecImplTest {
 
     NetworkId destId;
     int destLength;
@@ -36,21 +42,26 @@ public class ProtocolTest {
     Packet packet;
     byte[] serialized;
     Version version;
-    Protocol protocol;
+    PacketCodec codec;
+    ArrayList<BinaryChunk> chunks;
 
     @Before
     public void setUpClass() throws Exception {
-        protocol = new Protocol();
+        codec = new PacketCodecImpl();
         destId = new NetworkId("s1:s2:s3:thing");
         destLength = destId.toString().length();
         payload = "This is a simple payload!".getBytes();
         packet = new Packet(payload, destId);
-        serialized = protocol.serialize(packet);
+        serialized = codec.encode(packet);
         version = Version.getInstance();
+
+        chunks = new ArrayList<>();
+        chunks.add(new BinaryChunk(payload));
+        chunks.add(new BinaryChunk(payload));
     }
 
     @Test
-    public void testSerialize() throws Exception {
+    public void testEncode() throws Exception {
         assertEquals(version.getMajor(), serialized[1]);
         assertEquals(version.getMinor(), serialized[2]);
         assertEquals(destLength, serialized[3]);
@@ -60,8 +71,26 @@ public class ProtocolTest {
     }
 
     @Test
-    public void testDeserialize() throws Exception {
-        Packet newPacket = protocol.deserialize(serialized, 0, serialized.length);
+    public void testDecode() throws Exception {
+        Packet newPacket = codec.decode(serialized, 0, serialized.length);
         assertEquals(packet, newPacket);
+        assertEquals(packet.getPayload().length, newPacket.getPayload().length);
     }
+
+    @Test
+    public void testCreatePacket() throws Exception {
+        Packet p = codec.createPacket(chunks, destId);
+        assertEquals(
+                1 + chunks.size() + 2 * payload.length,
+                p.getPayload().length);
+    }
+
+    @Test
+    public void testReadChunks() throws Exception {
+        Packet p = codec.createPacket(chunks, destId);
+        List<BinaryChunk> myChunks = codec.readChunks(p);
+        assertEquals(myChunks.get(0).asNewString(), myChunks.get(1).asNewString());
+        assertArrayEquals(myChunks.get(0).asNewByteArray(), payload);
+    }
+
 }

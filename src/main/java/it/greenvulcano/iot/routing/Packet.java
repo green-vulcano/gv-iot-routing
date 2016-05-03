@@ -25,8 +25,8 @@ import java.util.Arrays;
  */
 public class Packet {
 
-    private byte[] payload;
-    private NetworkId destination;
+    byte[] payload;
+    NetworkId destination;
 
     public Packet(byte[] payload) {
         this(payload, null);
@@ -63,4 +63,6 @@ public class Packet {
         result = 31 * result + (destination != null ? destination.hashCode() : 0);
         return result;
     }
+
+
 }

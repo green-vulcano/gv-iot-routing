@@ -16,15 +16,24 @@
  * along with this software. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package it.greenvulcano.iot.routing;
+package it.greenvulcano.iot.routing.v1;
 
-import java.io.IOException;
+import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
- *
+ * @author Domenico Barra - eisenach@gmail.com
  */
-public interface Protocol {
+public class ProtocolImplTest {
 
-    PacketCodec getPacketCodec();
+
+    @Test
+    public void testGetPacketCodec() throws Exception {
+        ProtocolImpl protocol = new ProtocolImpl();
+        assertNotNull(protocol.getPacketCodec());
+        assertTrue(protocol.getPacketCodec() instanceof PacketCodecImpl);
+    }
 
 }

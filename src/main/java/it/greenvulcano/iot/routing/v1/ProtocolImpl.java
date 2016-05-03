@@ -16,15 +16,21 @@
  * along with this software. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package it.greenvulcano.iot.routing;
+package it.greenvulcano.iot.routing.v1;
 
-import java.io.IOException;
+import it.greenvulcano.iot.routing.PacketCodec;
+import it.greenvulcano.iot.routing.Protocol;
 
 /**
- *
+ * @author Domenico Barra - eisenach@gmail.com
  */
-public interface Protocol {
+public class ProtocolImpl implements Protocol {
 
-    PacketCodec getPacketCodec();
+    PacketCodecImpl packetCodec = new PacketCodecImpl();
+
+    @Override
+    public PacketCodec getPacketCodec() {
+        return packetCodec;
+    }
 
 }

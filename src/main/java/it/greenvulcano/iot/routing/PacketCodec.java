@@ -18,13 +18,24 @@
 
 package it.greenvulcano.iot.routing;
 
+import it.greenvulcano.iot.routing.payload.BinaryChunk;
+
 import java.io.IOException;
+import java.util.List;
 
 /**
- *
+ * @author Domenico Barra - eisenach@gmail.com
  */
-public interface Protocol {
+public interface PacketCodec {
 
-    PacketCodec getPacketCodec();
+    Packet createPacket(List<? extends BinaryChunk> chunks, NetworkId destination) throws IOException;
+
+    List<BinaryChunk> readChunks(Packet p) throws IOException;
+
+    byte[] encode(Packet p) throws IOException;
+
+    Packet decode(byte[] p, int offset, int length) throws IOException, VersionException;
+
+
 
 }
