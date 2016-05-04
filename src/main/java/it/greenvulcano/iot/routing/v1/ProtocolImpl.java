@@ -20,17 +20,23 @@ package it.greenvulcano.iot.routing.v1;
 
 import it.greenvulcano.iot.routing.PacketCodec;
 import it.greenvulcano.iot.routing.Protocol;
+import it.greenvulcano.iot.routing.Version;
 
 /**
  * @author Domenico Barra - eisenach@gmail.com
  */
 public class ProtocolImpl implements Protocol {
 
-    PacketCodecImpl packetCodec = new PacketCodecImpl();
+    PacketCodec packetCodec = new PacketCodecImpl(this);
+    Version version = VersionImpl.getInstance();
 
     @Override
     public PacketCodec getPacketCodec() {
         return packetCodec;
     }
 
+    @Override
+    public Version getVersion() {
+        return version;
+    }
 }

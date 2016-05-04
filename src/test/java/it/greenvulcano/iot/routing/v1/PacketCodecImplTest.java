@@ -21,7 +21,6 @@ package it.greenvulcano.iot.routing.v1;
 import it.greenvulcano.iot.routing.NetworkId;
 import it.greenvulcano.iot.routing.Packet;
 import it.greenvulcano.iot.routing.PacketCodec;
-import it.greenvulcano.iot.routing.Protocol;
 import it.greenvulcano.iot.routing.payload.BinaryChunk;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,19 +40,19 @@ public class PacketCodecImplTest {
     byte[] payload;
     Packet packet;
     byte[] serialized;
-    Version version;
+    VersionImpl version;
     PacketCodec codec;
     ArrayList<BinaryChunk> chunks;
 
     @Before
     public void setUpClass() throws Exception {
-        codec = new PacketCodecImpl();
+        codec = new ProtocolImpl().getPacketCodec();
         destId = new NetworkId("s1:s2:s3:thing");
         destLength = destId.toString().length();
         payload = "This is a simple payload!".getBytes();
         packet = new Packet(payload, destId);
         serialized = codec.encode(packet);
-        version = Version.getInstance();
+        version = VersionImpl.getInstance();
 
         chunks = new ArrayList<>();
         chunks.add(new BinaryChunk(payload));

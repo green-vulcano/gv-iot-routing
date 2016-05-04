@@ -27,4 +27,6 @@ public interface Protocol {
 
     PacketCodec getPacketCodec();
 
+    Version getVersion();
+
 }

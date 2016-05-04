@@ -23,6 +23,8 @@ package it.greenvulcano.iot.routing;
  */
 public class VersionException extends Exception {
 
+    public VersionException(String message) { super(message); }
+
     public VersionException(Version expected, int gotMajor, int gotMinor) {
         super(String.format("Expected version: %d.%d.x, got: %d.%d.x",
                 expected.getMajor(), expected.getMinor(),

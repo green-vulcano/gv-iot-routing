@@ -21,7 +21,7 @@ package it.greenvulcano.iot.routing.v1;
 /**
  * @author Domenico Barra - eisenach@gmail.com
  */
-public class Version extends it.greenvulcano.iot.routing.Version {
+public class VersionImpl extends it.greenvulcano.iot.routing.Version {
     @Override
     public int getMajor() {
         return 1;
@@ -37,9 +37,9 @@ public class Version extends it.greenvulcano.iot.routing.Version {
         return 0;
     }
 
-    private static final Version INSTANCE = new Version();
+    private static final VersionImpl INSTANCE = new VersionImpl();
 
-    public static Version getInstance() {
+    public static VersionImpl getInstance() {
         return INSTANCE;
     }
 }

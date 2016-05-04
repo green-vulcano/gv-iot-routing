@@ -33,4 +33,18 @@ public abstract class Version {
         return String.format(
                 "%d.%d.%d", getMajor(), getMinor(), getPatch());
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Version)) return false;
+        Version other = (Version) obj;
+        return  getMajor() == other.getMajor() &&
+                getMinor() == other.getMinor() &&
+                getPatch() == other.getPatch();
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * getMajor() + 13 * getMajor() + 7 * getPatch();
+    }
 }

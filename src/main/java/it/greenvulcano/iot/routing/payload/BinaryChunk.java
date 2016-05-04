@@ -86,14 +86,23 @@ public class BinaryChunk {
         os.write(payload, offset, length);
     }
 
+    /**
+     * @return the binary payload where this chunk is located
+     */
     public byte[] getPayload() {
         return payload;
     }
 
+    /**
+     * @return the start position - within the payload - of this chunk
+     */
     public int getOffset() {
         return offset;
     }
 
+    /**
+     * @return the length of this chunk
+     */
     public int getLength() {
         return length;
     }
