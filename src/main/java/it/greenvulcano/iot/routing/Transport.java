@@ -26,6 +26,19 @@ import java.io.IOException;
 public interface Transport {
 
     /**
+     * Exception to represent authentication problems
+     */
+    public static class AuthException extends Exception {
+        public AuthException(String message) {
+            super(message);
+        }
+
+        public AuthException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
+    /**
      * @return the id of the network to which this transport is
      *         connected, or <code>null</code> if the connection
      *         is to the main site.
@@ -36,8 +49,9 @@ public interface Transport {
      * Starts the transport - i.e. acquires resources and establishes
      * connections to send/receive data over the IoT network
      * @throws IOException if anything goes wrong while starting the transport
+     * @throws AuthException if the authentication phase goes wrong
      */
-    void start() throws IOException;
+    void start() throws IOException, AuthException;
 
     /**
      * Stops the transport - i.e. closes connections and releases
@@ -55,4 +69,15 @@ public interface Transport {
      */
     void route(Packet p) throws IOException;
 
+    /**
+     * Adds a new listener to this transport
+     * @param lst the listener to add
+     */
+    void addListener(TransportListener lst);
+
+    /**
+     * Removes a listener from this transport
+     * @param lst the listener to remove
+     */
+    void removeListener(TransportListener lst);
 }

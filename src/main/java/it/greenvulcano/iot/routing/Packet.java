@@ -27,6 +27,7 @@ public class Packet {
 
     byte[] payload;
     NetworkId destination;
+    String topic;
 
     public Packet(byte[] payload) {
         this(payload, null);

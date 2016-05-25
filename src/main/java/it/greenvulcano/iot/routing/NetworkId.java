@@ -21,6 +21,7 @@ package it.greenvulcano.iot.routing;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.StringTokenizer;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Uniquely identifies a <i>thing</i> (i.e. a GreenVulcano node or any other
@@ -67,6 +68,11 @@ public class NetworkId {
     private ArrayList<String> reversePath;
 
     /**
+     * Caches the string representation of this network id
+     */
+    private AtomicReference<String> asString = new AtomicReference<>();
+
+    /**
      * Constructs a new NetworkID.
      * @param path
      */
@@ -88,7 +94,7 @@ public class NetworkId {
         } else {
             reversePath.add(network);
         }
-
+        asString.set(null);
     }
 
     /**
@@ -108,12 +114,19 @@ public class NetworkId {
      */
     public String pop() {
         if (reversePath.size() == 1) return null;
-        return reversePath.remove(reversePath.size() - 1);
+        String removed = reversePath.remove(reversePath.size() - 1);
+        asString.set(null);
+        return removed;
     }
 
     @Override
     public String toString() {
-        return joinReverse(reversePath);
+        String s = asString.get();
+        if (s == null) {
+            s = joinReverse(reversePath);
+            asString.set(s);
+        }
+        return s;
     }
 
     @Override

@@ -24,13 +24,29 @@ package it.greenvulcano.iot.routing;
  */
 public interface TransportListener {
 
-    void onConnectionEstablished(Transport t);
+    class Info {
+        public Transport transport;
+        public Packet    packet;
+        public Exception failureReason;
 
-    void onConnectionLost(Transport t);
+        public Info(Transport transport) {
+            this.transport = transport;
+        }
 
-    void onConnectionClosed(Transport t);
+        public Info(Transport transport, Packet packet, Exception failureReason) {
+            this.transport = transport;
+            this.packet = packet;
+            this.failureReason = failureReason;
+        }
+    }
 
-    void onPacketReceived(Transport t, Packet p);
 
 
+    void transportStarted(Info t);
+
+    void transportStopping(Info t);
+
+    void transportPacketReceived(Info t);
+
+    void transportPacketSent(Info t);
 }
