@@ -54,14 +54,14 @@ public abstract class BasicTransport implements Transport {
 
     @Override
     public final void stop() throws IOException {
-        invokeCallback(TransportListener::transportStarted, new TransportListener.Info(this));
+        invokeCallback(TransportListener::transportStopping, new TransportListener.Info(this));
         doStop();
     }
 
     @Override
     public final void route(Packet p) throws IOException {
+        invokeCallback(TransportListener::transportPacketSending, new TransportListener.Info(this, p, null));
         doRoute(p);
-        invokeCallback(TransportListener::transportPacketSent, new TransportListener.Info(this, p, null));
     }
 
     @Override
@@ -74,11 +74,11 @@ public abstract class BasicTransport implements Transport {
         listeners.removeIf(wr -> lst.equals(wr.get()));
     }
 
-    protected void invokeCallback(BiConsumer<TransportListener, TransportListener.Info> cback,
+    protected void invokeCallback(BiConsumer<TransportListener, TransportListener.Info> callback,
                                   TransportListener.Info info) {
         listeners.forEach( lst -> {
             TransportListener tl = lst.get();
-            if (tl != null) cback.accept(lst.get(), info);
+            if (tl != null) callback.accept(lst.get(), info);
         });
     }
 

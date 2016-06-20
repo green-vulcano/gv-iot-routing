@@ -41,12 +41,27 @@ public interface TransportListener {
     }
 
 
-
+    /**
+     * Called when a transport has started
+     * @param t the information concerning the specific transport
+     */
     void transportStarted(Info t);
 
+    /**
+     * Called when a transport is about to stop
+     * @param t the information concerning the specific transport
+     */
     void transportStopping(Info t);
 
+    /**
+     * Called when a packet has been received through a transport
+     * @param t the information concerning the specific transport and packet
+     */
     void transportPacketReceived(Info t);
 
-    void transportPacketSent(Info t);
+    /**
+     * Called when a packet is about to be sent
+     * @param t the information concerning the specific transport and packet
+     */
+    void transportPacketSending(Info t);
 }
